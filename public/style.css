@@ -1,0 +1,14 @@
+#mapid {
+  height: 75vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  margin-top: -20px;
+}
+
+.row {
+  margin-left: 20px;
+  margin-top: 0;
+}
