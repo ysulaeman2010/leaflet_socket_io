@@ -1,10 +1,12 @@
+import { tankPos } from "./utils.js";
+
 const PORT = 3001;
 const socket = io(`http://localhost:${PORT}`);
 
+/* Leaflet */
 const zoom_level = 14;
 const map = L.map("mapid").setView([-6.91081915, 107.7583738], zoom_level);
 
-/* Leaflet */
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution:
     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -31,36 +33,8 @@ const markerTank2 = L.marker([0, 0], { icon: tankIcon }).addTo(map);
 
 /* End of Leaflet */
 
-const R = 6378.1; //radius of the earch
-
-const tankPos = (lat, lng, dist, compass) => {
-  const degToRad = (num) => num * (Math.PI / 180);
-  const radToDeg = (num) => num * (180 / Math.PI);
-  const mToKm = (num) => num / 1000;
-
-  let lat_tank = Math.asin(
-    Math.sin(degToRad(lat)) * Math.cos(mToKm(dist) / R) +
-      Math.cos(degToRad(lat)) *
-        Math.sin(mToKm(dist) / R) *
-        Math.cos(degToRad(compass))
-  );
-
-  let lng_tank =
-    degToRad(lng) +
-    Math.atan2(
-      Math.sin(degToRad(compass)) *
-        Math.sin(mToKm(dist) / R) *
-        Math.cos(degToRad(lat)),
-      Math.cos(mToKm(dist) / R) - Math.sin(degToRad(lat)) * Math.sin(lat_tank)
-    );
-
-  let f_lat = radToDeg(lat_tank);
-  let f_lng = radToDeg(lng_tank);
-
-  return { f_lat, f_lng };
-};
-
 socket.on("connection");
+
 socket.on("data", (res) => {
   console.log(res);
 
